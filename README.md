@@ -17,7 +17,7 @@ julia> using ReferenceSequences
 # create ReferenceSequence from DNASequence of Bio.Seq
 julia> seq = ReferenceSequence(dna"ACGT"^5 * dna"N"^10)
 30nt Reference Sequence:
- ACGTACGTACGTACGTACGTNNNNNNNNNN
+ACGTACGTACGTACGTACGTNNNNNNNNNN
 
 julia> DNASequence(seq)  # round trip
 30nt DNA Sequence:
@@ -28,7 +28,7 @@ T
 
 julia> seq[15:25]  # make a subsequence (copy-free)
 11nt Reference Sequence:
- GTACGTNNNNN
+GTACGTNNNNN
 
 julia> seq[1:4] == dna"ACGT"  # comparison
 true
