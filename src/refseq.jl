@@ -166,6 +166,44 @@ Base.isless{A<:DNAAlphabet}(seq1::BioSequence{A}, seq2::ReferenceSequence) =
     cmp(seq1, seq2) == -1
 
 
+# Finders
+# -------
+
+function Base.findnext(seq::ReferenceSequence, val, start::Integer)
+    checkbounds(seq, start)
+    v = convert(DNANucleotide, val)
+    if v == DNA_N
+        return findnextn(seq.nmask, start)
+    else
+        for i in Int(start):endof(seq)
+            x = unsafe_getindex(seq, i)
+            if x == val
+                return i
+            end
+        end
+    end
+    return 0
+end
+
+function Base.findprev(seq::ReferenceSequence, val, start::Integer)
+    checkbounds(seq, start)
+    v = convert(DNANucleotide, val)
+    if v == DNA_N
+        return findprevn(seq.nmask, start)
+    else
+        for i in Int(start):-1:1
+            x = unsafe_getindex(seq, i)
+            if x == val
+                return i
+            end
+        end
+    end
+    return 0
+end
+
+Base.findfirst(seq::ReferenceSequence, val) = findnext(seq, val, 1)
+Base.findlast(seq::ReferenceSequence, val)  = findprev(seq, val, endof(seq))
+
 # Printers
 # --------
 

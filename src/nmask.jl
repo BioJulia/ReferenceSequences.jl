@@ -55,7 +55,7 @@ end
     return ((block >> (bitid - 1)) & 1) == 1
 end
 
-function findnext(nmask::NMask, i::Integer)
+function findnextn(nmask::NMask, i::Integer)
     if i > length(nmask)
         return 0
     end
@@ -85,7 +85,7 @@ function findnext_in_block(block, bitid)
     return block == 0 ? 0 : bitid + trailing_zeros(block)
 end
 
-function findprev(nmask::NMask, i::Integer)
+function findprevn(nmask::NMask, i::Integer)
     if i ≤ 0
         return 0
     end
@@ -124,15 +124,15 @@ function hasn_within(nmask::NMask, r::UnitRange{Int})
         return false
     end
     # slower but exact algorithm to check
-    return findnext(nmask, first(r)) in r
+    return findnextn(nmask, first(r)) in r
 end
 
 function make_nbitmap(nmask::NMask, r::UnitRange{Int})
     ns = falses(length(r))
-    i = findnext(nmask, first(r))
+    i = findnextn(nmask, first(r))
     while i in r
         ns[i-first(r)+1] = true
-        i = findnext(nmask, i + 1)
+        i = findnextn(nmask, i + 1)
     end
     return ns
 end

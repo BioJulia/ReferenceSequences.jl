@@ -60,6 +60,32 @@ end
     @test dna"ACGTN" == seq
     @test cmp(seq, seq) == 0
     @test ReferenceSequence("ACGTN") == seq
+
+
+    seq = ReferenceSequence(dna"ACGNNNANG")
+    @test findnext(seq, DNA_A, 1) == 1
+    @test findnext(seq, DNA_C, 1) == 2
+    @test findnext(seq, DNA_G, 1) == 3
+    @test findnext(seq, DNA_T, 1) == 0
+    @test findnext(seq, DNA_N, 1) == 4
+    @test findnext(seq, DNA_A, 2) == 7
+    @test findnext(seq, DNA_N, 8) == 8
+
+    @test_throws BoundsError findnext(seq, DNA_A, 0)
+
+    @test findprev(seq, DNA_A, 9) == 7
+    @test findprev(seq, DNA_C, 9) == 2
+    @test findprev(seq, DNA_T, 9) == 0
+    @test findprev(seq, DNA_N, 9) == 8
+    @test findprev(seq, DNA_N, 5) == 5
+    @test findprev(seq, DNA_N, 3) == 0
+
+    @test_throws BoundsError findnext(seq, DNA_A, 10)
+
+    @test findfirst(seq, DNA_A) == 1
+    @test findfirst(seq, DNA_N) == 4
+    @test findlast(seq, DNA_A) == 7
+    @test findlast(seq, DNA_N) == 8
 end
 
 @testset "Long Sequences" begin
