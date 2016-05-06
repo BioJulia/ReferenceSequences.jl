@@ -80,9 +80,10 @@ end
 end
 
 @inline function unsafe_getindex(seq::ReferenceSequence, i::Integer)
-    @inbounds let i = Int(i) + seq.part.start - 2
-        d, r = divrem32(i)
-        if seq.nmask[i+1]
+    j = Int(i) + seq.part.start - 2
+    d, r = divrem32(j)
+    @inbounds begin
+        if seq.nmask[j+1]
             return DNA_N
         else
             return DNANucleotide((seq.data[d+1] >> 2r) & 0b11)
